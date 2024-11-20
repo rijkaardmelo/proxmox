@@ -16,9 +16,10 @@ provider "proxmox" {
 
 resource    "proxmox_vm_qemu"   "SRV-BACULA-DIRECTOR"   {
     name                    =   "SRV-BACULA-DIRECTOR"
-    target_node             =   "pve"
+    target_node             =   "Proxmox"
     clone                   =   "debian-12-generic-amd64"
     define_connection_info  =   true
+    os_type = "cloud-init"
     cpu                     =   "x86-64-v2-AES"
     agent                   =   1
     cores                   =   2
@@ -26,19 +27,25 @@ resource    "proxmox_vm_qemu"   "SRV-BACULA-DIRECTOR"   {
     memory                  =   2048
     onboot                  =   true
     scsihw                  =   "virtio-scsi-single"
-    os_type                 =   "ubuntu"
-    # ipconfig0               =   "ip=192.168.31.5/24,gw=192.168.31.1"
+    ipconfig0               =   "ip=192.168.31.5/24,gw=192.168.31.1"
     serial  {
         id      =   0
         type    =   "socket"
     }
     disks   {
+        ide {
+            ide0 {
+                cloudinit {
+                    storage = "local"
+                }
+            }
+        }
         scsi    {
             scsi0   {
                 disk    {
                     iothread    =   true
                     size        =   8
-                    storage     =   "local-lvm"
+                    storage     =   "local"
                 }
             }
         }

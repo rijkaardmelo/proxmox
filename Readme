@@ -6,9 +6,9 @@
     sudo apt update -y && sudo apt install libguestfs-tools -y
     virt-customize -a debian-12-generic-amd64.qcow2 --install qemu-guest-agent
     virt-customize -a debian-12-generic-amd64.qcow2 --root-password password:ubuntu
-    qm create 9000 --name debian-12-generic-amd64 --memory 2048 --net0 virtio,bridge=vmbr0 --ipconfig0 ip=192.168.31.4/24,gw=192.168.31.1 --scsihw virtio-scsi-single --serial0 socket --vga serial0 --ostype l26
-    qm importdisk 9000 debian-12-generic-amd64.qcow2 local-lvm
-    qm set 9000 --scsi0 local-lvm:vm-9000-disk-0
-    qm set 9000 --ide0 local-lvm:cloudinit
+    qm create 9000 --name debian-12-generic-amd64 --memory 2048 --net0 virtio,bridge=vmbr0 --scsihw virtio-scsi-single --serial0 socket --vga serial0 --ostype l26
+    qm importdisk 9000 debian-12-generic-amd64.qcow2 local
+    qm set 9000 --scsi0 local:vm-9000-disk-0
+    qm set 9000 --ide0 local:cloudinit
     qm set 9000 --boot order=scsi0
     qm template 9000
